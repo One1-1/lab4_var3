@@ -27,39 +27,56 @@ if __name__ == '__main__':
         match choice:
 
             case 1:
-                a = float(input("Введите первое число: "))
-                b = float(input("Введите второе число: "))
-                c = float(input("Введите третье число: "))
 
-                print("Дробная часть среднего геометрического:", task4_1(a, b, c))
+                print("Введите координаты трех вершин треугольника:")
+                x1 = float(input("x1: "))
+                y1 = float(input("y1: "))
+                x2 = float(input("x2: "))
+                y2 = float(input("y2: "))
+                x3 = float(input("x3: "))
+                y3 = float(input("y3: "))
+
+
+                area, perimeter = task4_1(x1, x2, x3, y1, y2, y3)
+
+                print("Используя оператор %:")
+                print("Площадь: %.2f, Периметр: %.2f" % (area, perimeter))
+
+                print("Используя метод format():")
+                print("Площадь: {:.2f}, Периметр: {:.2f}".format(area, perimeter))
+
+                print("Используя f-строки:")
+                print(f"Площадь: {area:.2f}, Периметр: {perimeter:.2f}")
 
             case 2:
-                x = float(input("Введите число: "))
-
+                x = float(input("add num format - 0.00: "))
                 task4_2(x)
 
             case 3:
-                x = float(input('Введите x: '))
+                x = float(input("Введите x: "))
 
                 print(task4_3(x))
 
             case 4:
-                operation = input("Введите тип операции (p, o, r, b): ").strip().lower()
-                start_cost = float(input("Введите начальную стоимость товара: "))
-
-                print(task4_4(operation, start_cost))
+                sum_amount = float(input("Введите сумму покупки: "))
+                card_type = input("Введите тип дисконтной карты (s, m, l, e): ")
+                task4_4(sum_amount, card_type)
 
             case 5:
-                print(task4_5())
+                task4_5()
 
             case 6:
 
-                print(task4_6())
+                current = int(input("Введите целое число (0 для завершения): "))
+                print("Количество чисел, больших своих соседей:", task4_6(current))
 
             case 7:
-                n = int(input("Введите число n: "))
+                n = int(input("Введите число: "))
+                first_5_hamming = task4_7(n)
+                print(first_5_hamming)
 
-                print(task4_7(n))
+                hamming_sum = sum(first_5_hamming)
+                print(hamming_sum)
 
             case _:
                     break

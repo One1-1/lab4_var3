@@ -1,51 +1,37 @@
-from turtledemo.penrose import start
+import math
 
-
-def task4_1(a, b, c):
+def task4_1(x1, y1, x2, y2, x3, y3):
     '''
-    Вычислите дробную часть среднего геометрического трёх заданных
-    вещественных чисел
+    По координатам трёх вершин некоторого треугольника найдите его
+    площадь и периметр
 
-    :param a: вводимое число
-    :param b: вводимое число
-    :param c: вводимое число
-    :return drob_part: дробная часть среднего геометрического
+    :param x1: координата вершины треугольника
+    :param y1: координата вершины треугольника
+    :param x2: координата вершины треугольника
+    :param y2: координата вершины треугольника
+    :param x3: координата вершины треугольника
+    :param y3: координата вершины треугольника
+    :return: area, perimeter
     '''
+    a = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+    b = math.sqrt((x3-x2)**2 + (y3-y2)**2)
+    c = math.sqrt((x1-x3)**2 + (y1-y3)**2)
+    s = (a + b + c) / 2
+    area = math.sqrt(s * (s - a) * (s - b) * (s - c))
+    perimeter = a + b + c
+    return area, perimeter
 
-    # Вычисление среднего геометрического
-    geometric_mean = (a * b * c) ** (1 / 3)
-
-    # Вычисление дробной части
-    drob_part = geometric_mean - int(geometric_mean)
-
-    # Вывод дробной части
-    return drob_part
 
 def task4_2(x):
     '''
-    Второй младший разряд (десятки) целой части числа х больше 3, но не
-    больше 7 и больше второго разряда дробной части
+    Число, образованное двумя старшими разрядами дробной части числа
+    х  [10; 30) U (40; 70]
 
     :param x: вводимое число
     :return: None
     '''
-
-    # Получаем целую и дробную части числа
-    integer_part = int(x)
-    fractional_part = x - integer_part
-
-    # Получаем второй младший разряд целой части (десятки)
-    tens_digit = (integer_part // 10) % 10
-
-    # Получаем второй разряд дробной части
-    drob_str = str(fractional_part)[2:]  # Преобразуем дробную часть в строку и убираем "0."
-    second_fractional_digit = int(drob_str[1]) if len(drob_str) > 1 else -1
-
-    # условие
-    if 3 < tens_digit <= 7 and tens_digit > second_fractional_digit:
-        print("Условия выполнены.")
-    else:
-        print("Условия не выполнены.")
+    isSpecial = 10<=((x*100)%100//1)<30 or 40<((x*100)%100//1)<=70
+    print(((x*100)%100//1), isSpecial)
 
 
 def task4_3(x):
@@ -53,139 +39,130 @@ def task4_3(x):
     Составить программу для вычисления значений функции y = f(x) при
     произвольных значениях x. (a, b – константы)
 
-    :param x: аргумент функции y = f(x)
-    :return y: результат
+    :param x: аргумент функции
+    :return: результат выполнения функции
     '''
-    from math import sin, sqrt, log
+    from math import log, sqrt, atan
 
-    a = 0.19
-    b = 6.1
-    e = 2.71
+    A = 4.8
+    B = 0.51
 
-    if x <= -1:
-        y = e**(sin(x))
-    if x > 5:
-        y = log(abs(b*x))**2
-    if -1 < x <= 5:
-        y = sqrt(1 + (a*x)**2)
+    if x <= -2:
+        y = log(abs(x) + sqrt(A * x**2 + 1))
+    elif x > 5:
+        y = atan(B/(x**2 + 1))
+    else:
+        y = sqrt(A**2 + x**2)
 
-    return y
-
+    return f"y = {y:+7f}"
 
 
-def task4_4(operation, start_cost):
+def task4_4(sum_amount, card_type):
     '''
-    Разработать программу, которая определяет по типу операции с товаром его
-    выходную стоимость: перемещение (p) - 0% накрутки от начальной стоимости;
-    оптовая реализация (o) - 5% накрутки; розничная (r) - 15% накрутки,
-    безналичная (b) - 7% накрутки. В программу вводится тип операции (один из
-    символов: p, o, r, b) и начальная стоимость товара, на выходе - процент накрутки
-    и итоговая стоимость.
+    Составить программу, которая определяет размер скидки на товар, в
+    зависимости от типа дисконтной карты. Типы карт: smart(s) - 3%, medium (m) -
+    7%, large (l) - 12%, extra (e) - 20%. В программу вводится сумма покупки и
+    символ, обозначающий тип карты. На экран выводится размер скидки и
+    итоговая сумма
 
-    :param operation: тип операции
-    :param start_cost: начальная стоимость
+    :param sum_amount: сумма
+    :param card_type: тип дисконтной карты
     :return: None
     '''
 
-    percent = 0
-    final_cost = start_cost
 
-    match operation:
-        case 'p':
-            percent = 0
-        case 'o':
-            percent = 5
-        case 'r':
-            percent = 15
-        case 'b':
-            percent = 7
+    match card_type:
+        case 's':
+            discount = sum_amount * (3 / 100)
+            total_with_discount = sum_amount - discount
+            print(f"Сумма скидки: {discount}")
+            print(f"Сумма со скидкой: {total_with_discount}")
+        case 'm':
+            discount = sum_amount * (7 / 100)
+            total_with_discount = sum_amount - discount
+            print(f"Сумма скидки: {discount}")
+            print(f"Сумма со скидкой: {total_with_discount}")
+        case 'l':
+            discount = sum_amount * (12 / 100)
+            total_with_discount = sum_amount - discount
+            print(f"Сумма скидки: {discount}")
+            print(f"Сумма со скидкой: {total_with_discount}")
+        case 'e':
+            discount = sum_amount * (20 / 100)
+            total_with_discount = sum_amount - discount
+            print(f"Сумма скидки: {discount}")
+            print(f"Сумма со скидкой: {total_with_discount}")
         case _:
-            print("Некорректный тип операции.")
-            exit()
+            print(f"{card_type} Без скидки!")
+            print(f"Сумма: {sum_amount}")
 
-    # итоговая стоимость
-    final_cost += start_cost * (percent / 100)
-    final_cost += start_cost * (percent / 100)
-
-    print(f"Процент накрутки: {percent}%")
-    print(f"Итоговая стоимость: {final_cost:.2f}")
 
 
 def task4_5():
     '''
-    Дана последовательность целых чисел, за которой следует ноль.
-    Определить какой из элементов максимальный или минимальный
-    встречается в ней раньше.
+    Найти все двузначные числа, сумма делителей которых четное число
 
-    :return: максмальное или минимальное значение
+    :param: None
+    :return: None
     '''
-    max_num = None
-    min_num = None
-    max_index = -1
-    min_index = -1
-    index = 0
+    for i in range(10, 100):
+        degit = 0
+        for j in range(1, i + 1):
+            if i % j == 0:
+                degit += j
+        if degit % 2 == 0:
+            print(i)
 
-    while True:
-        num = int(input())
-        if num == 0:
-            break
-        if max_num is None or num > max_num:
-            max_num = num
-            max_index = index
-        if min_num is None or num < min_num:
-            min_num = num
-            min_index = index
-        index += 1
-
-    if max_index < min_index:
-        return max_num
-    else:
-        return min_num
-
-
-def task4_6():
+def task4_6(current):
     '''
-    Определить количество трехзначных чисел, сумма цифр которых простое число.
+    Дана последовательность целых чисел, 0 – конец последовательности.
+    Определить, сколько чисел больше своих соседей, т.е. предыдущего и последующего
 
-    :return count: кол-во трехзначных чисел
+    :param current: вводимое число
+    :return: count количество чисел больше своих соседей
     '''
     count = 0
+    prev = None
 
-    for number in range(100, 1000):
+    while current != 0:
+        next_number = int(input("Введите следующее целое число (0 для завершения): "))
+        if next_number == 0:
+            break
 
-        # Выделяем цифры числа
-        hundreds = number // 100
-        tens = (number // 10) % 10
-        units = number % 10
+        if prev is not None and current > prev and current > next_number:
+            count += 1
 
-        # Считаем сумму цифр
-        digits_sum = hundreds + tens + units
-
-        # Проверка, является ли сумма простым числом
-        if digits_sum > 1:
-            flag = True
-            for i in range(2, int(digits_sum ** 0.5) + 1):
-                if digits_sum % i == 0:
-                    flag = False
-                    break
-            if flag:
-                count += 1
-
+        prev = current
+        current = next_number
     return count
 
-def task4_7(n):
 
-    for i in range(1, n + 1):
-        str_i = str(i)
-        flag = True
-        # Перебираем каждую цифру
-        for digit in str_i:
-            # Если цифра равна '0' или число не делится на эту цифру, устанавливаем флаг в False
-            if digit == '0' or i % int(digit) != 0:
-                flag = False
-                break
-        if flag:
-            return i
+def task4_7(n):
+    '''
+    Последовательность Хэмминга образуют натуральные числа, не имеющие
+    других простых делителей, кроме 2, 3 и 5. Найти сумму первых n
+    элементов этой последовательности
+
+    :param n: кол-во элементов последовательности
+    :return: сумма первых элементов последовательности
+    '''
+    hamming_numbers = [1]
+    i2 = i3 = i5 = 0
+
+    while len(hamming_numbers) < n:
+        next_number = min(2 * hamming_numbers[i2], 3 * hamming_numbers[i3], 5 * hamming_numbers[i5])
+        hamming_numbers.append(next_number)
+
+        if next_number == 2 * hamming_numbers[i2]:
+            i2 += 1
+        if next_number == 3 * hamming_numbers[i3]:
+            i3 += 1
+        if next_number == 5 * hamming_numbers[i5]:
+            i5 += 1
+
+    return hamming_numbers
+
+
 
 
 
